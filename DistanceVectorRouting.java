@@ -1,3 +1,5 @@
+package dvr;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 
@@ -26,6 +28,9 @@ public class DistanceVectorRouting {
         globalMatrix.setEdge(from, to, distance);
       }
       globalMatrix.printMatrix();
+
+
+
     } catch (Exception e) {
       System.out.println(e.getMessage());
       System.out.println(e.getClass().getCanonicalName());

@@ -1,3 +1,5 @@
+package dvr;
+
 public class RoutingTableEntry {
   private int nextHop;
   private int cost;
