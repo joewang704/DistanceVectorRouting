@@ -16,4 +16,8 @@ public class RoutingTableEntry {
   public void updateCost(int newCost) {
     this.cost = newCost;
   }
+
+  public int getCost() { return cost; }
+
+  public int getNextHop() { return nextHop; }
 }

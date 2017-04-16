@@ -8,8 +8,8 @@ public class GlobalMatrix {
   }
 
   public void setEdge(int from, int to, int distance) {
-    int f = from - 1;
-    int t = to - 1;
+    int f = from;
+    int t = to;
 
     globalMatrix[f][t] = distance;
     globalMatrix[t][f] = distance;
