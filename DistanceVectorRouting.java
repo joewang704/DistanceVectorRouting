@@ -32,15 +32,27 @@ public class DistanceVectorRouting {
         // add edges to matrix graph
         globalMatrix.setEdge(from, to, cost);
 
-        // add edges to routing table
         RoutingTable fromTable = routingTables.getRoutingTable(from);
-        fromTable.addEntry(from, to, cost, to);
         RoutingTable toTable = routingTables.getRoutingTable(to);
+
+        // add edges to node neighbors
+        fromTable.addEdge(to, cost);
+        toTable.addEdge(from, cost);
+
+        // add values to routing table
+        fromTable.addEntry(from, to, cost, to);
         toTable.addEntry(to, from, cost, from);
+
       }
       //globalMatrix.printMatrix();
 
-      routingTables.print();
+      //routingTables.print();
+
+      // add initial update queue values
+      for (int i = 0; i < numRouters; i++) {
+        RoutingTable t = routingTables.getRoutingTable(i);
+        UpdateQueue.push(t.getDistanceVector(), i);
+      }
 
       // run DVR algorithm until convergence
       RunDVR.run(routingTables);

@@ -3,26 +3,29 @@ package dvr;
 public class RunDVR {
   public static void run(RoutingTableArray tables) {
     // repeat iterations of DVR until convergence
-    //while (true) {
-      // copy everything
-      copyTables(tables);
+    int round = 1;
+    System.out.println("Initial Round 0");
+    tables.print();
+    while (!UpdateQueue.queue.isEmpty()) {
+
+      int size = UpdateQueue.queue.size();
+      for (int i = 0; i < size; i++) {
+        UpdateItem item = UpdateQueue.queue.remove(0);
+        sendDistanceVector(item, tables);
+      }
+      System.out.println("Round " + round++);
       tables.print();
-      updateTables(tables);
-      // tables update themselves
-    //}
+    }
   }
 
-  public static void copyTables(RoutingTableArray routingTables) {
+  public static void sendDistanceVector(UpdateItem item, RoutingTableArray routingTables) {
+    int fromRouter = item.fromRouter;
+    RoutingTableEntry[] distanceVector = item.distanceVector;
     for (int i = 0; i < routingTables.length; i++) {
-      for (int j = 0; j < routingTables.length; j++) {
-        // avoid copying to itself
-        if (i != j) {
-          RoutingTable iTable = routingTables.getRoutingTable(i);
-          RoutingTable jTable = routingTables.getRoutingTable(j);
-          for (int col = 0; col < iTable.length; col++) {
-            iTable.addEntry(j, col, jTable.getEntry(j, col));
-          }
-        }
+      // avoid sending to itself
+      if (i != fromRouter) {
+        RoutingTable rcvTable = routingTables.getRoutingTable(i);
+        rcvTable.receiveDistanceVector(distanceVector, fromRouter);
       }
     }
   }
