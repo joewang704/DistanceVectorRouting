@@ -16,6 +16,24 @@ public class DistanceVectorRouting {
     String eventFile = args[1];
     int binaryFlag = Integer.valueOf(args[2]);
 
+    try (BufferedReader eventBr = new BufferedReader(new FileReader(eventFile))) {
+      String line;
+
+      // add events to event queuq
+      while ((line = eventBr.readLine()) != null) {
+        int round = Integer.valueOf(line.split(" ")[0]);
+        int fromRouter = Integer.valueOf(line.split(" ")[1]) - 1;
+        int toRouter = Integer.valueOf(line.split(" ")[2]) - 1;
+        int cost = Integer.valueOf(line.split(" ")[3]);
+        EventQueue.push(round, fromRouter, toRouter, cost);
+      }
+      EventQueue.print();
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      System.out.println(e.getClass().getCanonicalName());
+      e.printStackTrace();
+    }
+
     try (BufferedReader br = new BufferedReader(new FileReader(initFile))) {
       String line;
       line = br.readLine();
@@ -42,7 +60,6 @@ public class DistanceVectorRouting {
         // add values to routing table
         fromTable.addEntry(from, to, cost, to);
         toTable.addEntry(to, from, cost, from);
-
       }
       //globalMatrix.printMatrix();
 
@@ -52,6 +69,11 @@ public class DistanceVectorRouting {
       for (int i = 0; i < numRouters; i++) {
         RoutingTable t = routingTables.getRoutingTable(i);
         UpdateQueue.push(t.getDistanceVector(), i);
+      }
+
+      // read
+      while ((line = br.readLine()) != null) {
+
       }
 
       // run DVR algorithm until convergence
