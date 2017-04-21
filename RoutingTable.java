@@ -49,21 +49,30 @@ public class RoutingTable {
         table[fromRouter][i] = distanceVector[i];
         // update own distance vector
 
-        int middleRouter = fromRouter;
         int dest = i;
+        int min = Integer.MAX_VALUE;
+        int newNextHop = -1;
 
         // ignore path to itself and if middleRouter has no path to dest
-        if (dest != router && distanceVector[dest] != null) {
-          int costSelfToMiddle = neighborCosts[middleRouter];
-          int costFromMiddleToDest = distanceVector[dest].getCost();
-          int newCost = costSelfToMiddle + costFromMiddleToDest;
-          RoutingTableEntry oldEntry = table[router][dest];
-          if (oldEntry == null || newCost < oldEntry.getCost()) {
+        if (dest != router) {
+          for (int j = 0; j < neighborCosts.length; j++) {
+            int startToMid = neighborCosts[j];
+            RoutingTableEntry midToDest = table[j][dest];
+            if (startToMid != 0 && midToDest != null) {
+              int newCost = startToMid + midToDest.getCost();
+              if (newCost < min) {
+                min = newCost;
+                newNextHop = j;
+              }
+            }
+          }
+
+          if (min != Integer.MAX_VALUE && (table[router][dest] != null || min != table[router][dest])) {
             //table[router][dest] = new RoutingTableEntry(middleRouter, newCost);
             // TODO: send new distance vector on next round
             // instead of updating now, queue update for next round to be sent
             RoutingTableEntry[] newDV = this.getDistanceVector();
-            newDV[dest] = new RoutingTableEntry(middleRouter, newCost);
+            newDV[dest] = new RoutingTableEntry(newNextHop, min);
             UpdateQueue.push(newDV, router);
           }
         }
