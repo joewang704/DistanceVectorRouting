@@ -13,6 +13,13 @@ public class RoutingTable {
     length = numRouters;
     this.router = router;
     neighborCosts = new int[numRouters];
+    for (int i = 0; i < neighborCosts.length; i++) {
+      if (i == router) {
+        neighborCosts[i] = 0;
+      } else {
+        neighborCosts[i] = -1;
+      }
+    }
   }
 
   public void addEdge(int to, int cost) {
@@ -42,12 +49,11 @@ public class RoutingTable {
   }
 
   public void receiveDistanceVector(RoutingTableEntry[] distanceVector, int fromRouter) {
-    // only receive if router that sent DV is a neighbor
-    if (neighborCosts[fromRouter] != 0) {
+    // only receive if router that sent DV is a neighbor or itself from edge change
+    if (neighborCosts[fromRouter] != 0 || fromRouter == router) {
       for (int i = 0; i < distanceVector.length; i++) {
         // copies value to table
         table[fromRouter][i] = distanceVector[i];
-        // update own distance vector
 
         int dest = i;
         int min = Integer.MAX_VALUE;
@@ -58,7 +64,7 @@ public class RoutingTable {
           for (int j = 0; j < neighborCosts.length; j++) {
             int startToMid = neighborCosts[j];
             RoutingTableEntry midToDest = table[j][dest];
-            if (startToMid != 0 && midToDest != null) {
+            if (startToMid > 0 && midToDest != null) {
               int newCost = startToMid + midToDest.getCost();
               if (newCost < min) {
                 min = newCost;
@@ -67,10 +73,13 @@ public class RoutingTable {
             }
           }
 
-          if (min != Integer.MAX_VALUE && (table[router][dest] != null || min != table[router][dest])) {
-            //table[router][dest] = new RoutingTableEntry(middleRouter, newCost);
-            // TODO: send new distance vector on next round
-            // instead of updating now, queue update for next round to be sent
+          RoutingTableEntry oldMin = table[router][dest];
+
+          if (min == Integer.MAX_VALUE) {
+            RoutingTableEntry[] newDV = this.getDistanceVector();
+            newDV[dest] = null;
+            UpdateQueue.push(newDV, router);
+          } else if (oldMin == null || min != oldMin.getCost()) {
             RoutingTableEntry[] newDV = this.getDistanceVector();
             newDV[dest] = new RoutingTableEntry(newNextHop, min);
             UpdateQueue.push(newDV, router);

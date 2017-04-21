@@ -24,11 +24,12 @@ public class RunDVR {
         toTable.addEdge(fromRouter, cost);
 
         // make event to update from routing table
-        UpdateQueue.push(fromTable.getDistanceVector(), fromRouter);
+        fromTable.receiveDistanceVector(fromTable.getDistanceVector(), fromRouter);
 
         // make event to update to routing table
-        UpdateQueue.push(toTable.getDistanceVector(), toRouter);
+        toTable.receiveDistanceVector(toTable.getDistanceVector(), toRouter);
       }
+
 
       for (int i = 0; i < size; i++) {
         UpdateItem item = UpdateQueue.queue.remove(0);
