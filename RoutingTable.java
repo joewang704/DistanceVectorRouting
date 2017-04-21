@@ -49,13 +49,38 @@ public class RoutingTable {
   }
 
   public void receiveDistanceVector(RoutingTableEntry[] distanceVector, int fromRouter) {
+    System.out.print((fromRouter + 1) + " sends to " + (router + 1) + ": ");
     // only receive if router that sent DV is a neighbor or itself from edge change
     if (neighborCosts[fromRouter] != 0 || fromRouter == router) {
       for (int i = 0; i < distanceVector.length; i++) {
+        RoutingTableEntry cur = distanceVector[i];
+        if (cur != null && i != fromRouter) {
+          int nextHop = cur.getNextHop();
+          // poison control/split horizon
+          if (nextHop == fromRouter) {
+            if (DistanceVectorRouting.variation == 1) {
+              // does not advertise
+              System.out.print(" nothing");
+              continue;
+            } else if (DistanceVectorRouting.variation == 2) {
+              // advertises infinity
+              distanceVector[i] = null;
+              System.out.print(" inf");
+            } else {
+              System.out.print(cur == null ? " inf" : " a" + cur.getCost());
+            }
+          } else {
+            System.out.print(cur == null ? " inf" : " b" + cur.getCost());
+          }
+        } else {
+          System.out.print(cur == null ? " inf" : " c" + cur.getCost());
+        }
+
         // copies value to table
         table[fromRouter][i] = distanceVector[i];
 
         int dest = i;
+
         int min = Integer.MAX_VALUE;
         int newNextHop = -1;
 
@@ -86,6 +111,7 @@ public class RoutingTable {
           }
         }
       }
+      System.out.println();
     }
   }
 

@@ -5,6 +5,8 @@ import java.io.FileReader;
 
 public class DistanceVectorRouting {
 
+  public static int variation = 0;
+
   public static void main(String[] args) {
     if (args.length != 3 || !args[0].contains(".txt") ||
       !args[1].contains(".txt") || (!args[2].equals("0") && !args[2].equals("1"))) {
@@ -15,6 +17,17 @@ public class DistanceVectorRouting {
     String initFile = args[0];
     String eventFile = args[1];
     int binaryFlag = Integer.valueOf(args[2]);
+
+    //runVariation(initFile, eventFile, binaryFlag, 0);
+    runVariation(initFile, eventFile, binaryFlag, 1);
+    //runVariation(initFile, eventFile, binaryFlag, 2);
+  }
+
+  public static void runVariation(String initFile, String eventFile, int binaryFlag, int variation) {
+    System.out.println("=======================");
+    System.out.println("Variation " + variation);
+    System.out.println("=======================");
+    DistanceVectorRouting.variation = variation;
 
     try (BufferedReader eventBr = new BufferedReader(new FileReader(eventFile))) {
       String line;
@@ -61,19 +74,11 @@ public class DistanceVectorRouting {
         fromTable.addEntry(from, to, cost, to);
         toTable.addEntry(to, from, cost, from);
       }
-      //globalMatrix.printMatrix();
-
-      //routingTables.print();
 
       // add initial update queue values
       for (int i = 0; i < numRouters; i++) {
         RoutingTable t = routingTables.getRoutingTable(i);
         UpdateQueue.push(t.getDistanceVector(), i);
-      }
-
-      // read
-      while ((line = br.readLine()) != null) {
-
       }
 
       // run DVR algorithm until convergence
