@@ -18,8 +18,8 @@ public class DistanceVectorRouting {
     String eventFile = args[1];
     int binaryFlag = Integer.valueOf(args[2]);
 
-    //runVariation(initFile, eventFile, binaryFlag, 0);
-    runVariation(initFile, eventFile, binaryFlag, 1);
+    runVariation(initFile, eventFile, binaryFlag, 0);
+    //runVariation(initFile, eventFile, binaryFlag, 1);
     //runVariation(initFile, eventFile, binaryFlag, 2);
   }
 
@@ -40,7 +40,7 @@ public class DistanceVectorRouting {
         int cost = Integer.valueOf(line.split(" ")[3]);
         EventQueue.push(round, fromRouter, toRouter, cost);
       }
-      EventQueue.print();
+      //EventQueue.print();
     } catch (Exception e) {
       System.out.println(e.getMessage());
       System.out.println(e.getClass().getCanonicalName());
@@ -71,8 +71,8 @@ public class DistanceVectorRouting {
         toTable.addEdge(from, cost);
 
         // add values to routing table
-        fromTable.addEntry(from, to, cost, to);
-        toTable.addEntry(to, from, cost, from);
+        fromTable.addEntry(from, to, cost, to, 1);
+        toTable.addEntry(to, from, cost, from, 1);
       }
 
       // add initial update queue values

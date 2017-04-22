@@ -7,9 +7,7 @@ public class RunDVR {
     System.out.println("Initial Round 0");
     tables.print();
     while (!UpdateQueue.queue.isEmpty()  || !EventQueue.queue.isEmpty()) {
-      System.out.println("Event queue: " + EventQueue.queue.size() + " " + EventQueue.queue.isEmpty());
       int size = UpdateQueue.queue.size();
-      System.out.println("Size: " + size);
 
       while (!EventQueue.queue.isEmpty() && EventQueue.peek().round == round) {
         EventUpdateItem event = EventQueue.queue.remove(0);
