@@ -49,7 +49,7 @@ public class DistanceVectorRouting {
         int fromRouter = Integer.valueOf(line.split(" ")[1]) - 1;
         int toRouter = Integer.valueOf(line.split(" ")[2]) - 1;
         int cost = Integer.valueOf(line.split(" ")[3]);
-        EventQueue.push(round, fromRouter, toRouter, cost);
+        EventQueue.push(round - 1, fromRouter, toRouter, cost);
       }
       //EventQueue.print();
     } catch (Exception e) {
