@@ -55,25 +55,23 @@ public class RoutingTable {
   public void receiveDistanceVector(RoutingTableEntry[] distanceVector, int fromRouter) {
     System.out.print((fromRouter + 1) + " sends to " + (router + 1) + ": ");
 
-    RoutingTableEntry[] sendDV = this.getDistanceVector();
-
     // only receive if router that sent DV is a neighbor or itself from edge change
-    if (neighborCosts[fromRouter] != 0 || fromRouter == router) {
-      boolean changed = false;
+    if (neighborCosts[fromRouter] != 0) {
+      // copy everything
       for (int i = 0; i < distanceVector.length; i++) {
         RoutingTableEntry cur = distanceVector[i];
         RoutingTableEntry orig = table[router][i];
 
         /*
         // poison control/split horizon
-        if (orig != null && i != fromRouter) {
+        if (orig != null && i != router) {
           int nextHop = orig.getNextHop();
           int cost = orig.getCost();
-          if (nextHop == fromRouter) {
+          if (nextHop == router) {
             if (DistanceVectorRouting.variation == 1) {
               // does not advertise
+              distanceVector[i] = null;
               System.out.print(" nothing");
-              continue;
             } else if (DistanceVectorRouting.variation == 2) {
               // advertises infinity
               distanceVector[i] = null;
@@ -86,55 +84,77 @@ public class RoutingTable {
           }
         } else {
           System.out.print(cur == null ? " inf" : " c" + cur.getCost());
-        }*/
+        }
+        */
         System.out.print(cur == null ? " inf" : " " + cur.getCost());
 
         // copies value to table
         table[fromRouter][i] = distanceVector[i];
-
-        int dest = i;
-
-        // ignore path to itself
-        if (dest != router) {
-          int min = Integer.MAX_VALUE;
-          int newNextHop = -1;
-          int newNumHops = -1;
-
-          for (int j = 0; j < neighborCosts.length; j++) {
-            int startToMid = neighborCosts[j];
-            RoutingTableEntry midToDest = table[j][dest];
-            if (startToMid > 0 && midToDest != null) {
-              int newCost = startToMid + midToDest.getCost();
-              if (newCost < min) {
-                min = newCost;
-                newNextHop = j;
-                newNumHops = midToDest.getNumHops() + 1;
-              }
-            }
-          }
-
-          RoutingTableEntry oldMin = table[router][dest];
-
-          if (min == Integer.MAX_VALUE) {
-            // vertex is isolated, send infinity
-            table[router][dest] = null;
-            sendDV[dest] = null;
-            if (table[router][dest] != null) {
-              // if not already null, that means value has been changed
-              changed = true;
-            }
-          } else if (oldMin == null || min != oldMin.getCost()) {
-            table[router][dest] = new RoutingTableEntry(newNextHop, min, newNumHops);
-            sendDV[dest] = new RoutingTableEntry(newNextHop, min, newNumHops);
-            changed = true;
-          }
-        }
-      }
-      if (changed) {
-        // if any value has been changed, send new distance vector
-        UpdateQueue.push(sendDV, router);
       }
       System.out.println();
+    }
+  }
+
+  public void update() {
+
+    RoutingTableEntry[] sendDV = this.getDistanceVector();
+
+    boolean changed = false;
+
+    // recalculate everything
+    for (int i = 0; i < table[router].length; i++) {
+      int dest = i;
+
+      // ignore path to itself
+      if (dest != router) {
+        int min = Integer.MAX_VALUE;
+        int newNextHop = -1;
+        int newNumHops = -1;
+
+        RoutingTableEntry oldMin = table[router][dest];
+
+        if (oldMin != null && oldMin.getCost() == 0) {
+          continue;
+        }
+
+        for (int j = 0; j < neighborCosts.length; j++) {
+          int startToMid = neighborCosts[j];
+          RoutingTableEntry midToDest = table[j][dest];
+
+          //System.out.println("destination: " + (dest+1));
+          //System.out.println(" neighbor "+(j+1)+", cost"+startToMid);
+
+          if (startToMid > 0 && midToDest != null) {
+
+            int newCost = startToMid + midToDest.getCost();
+            //System.out.println(" new cost of "+(router+1)+", "+(dest+1)+":"+newCost);
+            if (newCost < min) {
+              min = newCost;
+              newNextHop = j;
+              newNumHops = midToDest.getNumHops() + 1;
+            }
+          }
+        }
+
+        if (min == Integer.MAX_VALUE) {
+          // vertex is isolated, send infinity
+          table[router][dest] = null;
+          sendDV[dest] = null;
+          if (table[router][dest] != null) {
+            // if not already null, that means value has been changed
+            changed = true;
+          }
+        } else if (oldMin == null || min != oldMin.getCost()) {
+          table[router][dest] = new RoutingTableEntry(newNextHop, min, newNumHops);
+          sendDV[dest] = new RoutingTableEntry(newNextHop, min, newNumHops);
+          changed = true;
+        }
+      }
+    }
+
+    if (changed) {
+      // if any value has been changed, send new distance vector
+      UpdateQueue.push(sendDV, router);
     }
   }
 

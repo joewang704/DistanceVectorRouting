@@ -22,20 +22,28 @@ public class RunDVR {
         toTable.addEdge(fromRouter, cost);
 
         // make event to update from routing table
-        fromTable.receiveDistanceVector(fromTable.getDistanceVector(), fromRouter);
+        //fromTable.receiveDistanceVector(fromTable.getDistanceVector(), fromRouter);
+        fromTable.update();
 
         // make event to update to routing table
-        toTable.receiveDistanceVector(toTable.getDistanceVector(), toRouter);
+        //toTable.receiveDistanceVector(toTable.getDistanceVector(), toRouter);
+        toTable.update();
       }
-
 
       for (int i = 0; i < size; i++) {
         UpdateItem item = UpdateQueue.queue.remove(0);
         sendDistanceVector(item, tables);
       }
+
+      for (int i = 0; i < tables.length; i++) {
+        RoutingTable table = tables.getRoutingTable(i);
+        table.update();
+      }
+
       System.out.println("Round " + round++);
       tables.print();
     }
+
   }
 
   public static void sendDistanceVector(UpdateItem item, RoutingTableArray routingTables) {
