@@ -61,7 +61,7 @@ public class RunDVR {
           RoutingTableArray.print();
         }
       }
-      if (DistanceVectorRouting.binaryFlag == 1) {
+      if (DistanceVectorRouting.binaryFlag == 0 || DistanceVectorRouting.binaryFlag == 1) {
         FileIO.print.println("Convergence delay: " + (round - lastEventRound));
       } else if (DistanceVectorRouting.binaryFlag == 2) {
         System.out.println("Convergence delay: " + (round - lastEventRound));
