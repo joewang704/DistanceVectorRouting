@@ -91,7 +91,7 @@ public class RoutingTable {
     }
   }
 
-  public void update() {
+  public void update() throws Exception {
 
     RoutingTableEntry[] sendDV = this.getDistanceVector();
 
@@ -121,9 +121,14 @@ public class RoutingTable {
 
             int newCost = startToMid + midToDest.getCost();
             if (newCost < min) {
-              min = newCost;
-              newNextHop = j;
-              newNumHops = midToDest.getNumHops() + 1;
+              if (midToDest.getNumHops() + 1 > 100) {
+                System.out.println("Count to infinity detected at round " + RunDVR.round);
+                throw new InfinityException();
+              } else {
+                min = newCost;
+                newNextHop = j;
+                newNumHops = midToDest.getNumHops() + 1;
+              }
             }
           }
         }
@@ -155,22 +160,41 @@ public class RoutingTable {
   }
 
   public void print() {
-    if (DistanceVectorRouting.binaryFlag == 1) {
-    } else if (DistanceVectorRouting.binaryFlag == 2) {
-      System.out.printf("|%7s|", "From/To");
+    if (DistanceVectorRouting.binaryFlag == 2) {
+      System.out.printf("|%8s|", "From/To");
       for (int i = 0; i < table.length; i++) {
-        System.out.printf("%2d |", i + 1);
+        System.out.printf("%3d |", i + 1);
       }
       System.out.println();
       for (int i = 0; i < table.length; i++) {
-        System.out.printf("|%7d|", i + 1);
+        System.out.printf("|%8d|", i + 1);
         for (int j = 0; j < table.length; j++) {
           RoutingTableEntry entry = table[i][j];
-          System.out.printf("%2d |", entry == null ? -1 : entry.getCost());
+          System.out.printf("%3d, ", entry == null ? -1 : entry.getCost());
+          System.out.printf(" %2d |", entry == null ? -1 : entry.getNextHop()+1);
         }
         System.out.println();
       }
     }
   }
 
+  public void print(int round) {
+      System.out.println();
+      System.out.printf("|%8d|", round + 1);
+      for (int j = 0; j < table.length; j++) {
+        RoutingTableEntry entry = table[router][j];
+        System.out.printf("%2d,", entry == null ? -1 : entry.getNextHop()+1);
+        System.out.printf("%3d |", entry == null ? -1 : entry.getNumHops());
+      }
+
+    // for (int i = 0; i < table.length; i++) {
+    //   System.out.printf("|%7d|", i + 1);
+    //   for (int j = 0; j < table.length; j++) {
+    //     RoutingTableEntry entry = table[routerNum][j];
+    //     System.out.printf("%2d,", entry == null ? -1 : entry.getNextHop()+1);
+    //     System.out.printf("%2d |", entry == null ? -1 : entry.getNumHops());
+    //   }
+    //   System.out.println();
+    // }
+  }
 }

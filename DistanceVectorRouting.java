@@ -11,7 +11,7 @@ public class DistanceVectorRouting {
   public static void main(String[] args) {
     if (args.length != 3 || !args[0].contains(".txt") ||
       !args[1].contains(".txt") || (!args[2].equals("0") && !args[2].equals("1") && !args[2].equals("2"))) {
-      System.out.println("Usage: java textfile.txt eventFile.txt binaryFlag");
+      System.out.println("Usage: java dvr.DistanceVectorRouting textfile.txt eventFile.txt binaryFlag");
       System.exit(1);
     }
 
@@ -19,9 +19,19 @@ public class DistanceVectorRouting {
     String eventFile = args[1];
     binaryFlag = Integer.valueOf(args[2]);
 
-    //runVariation(initFile, eventFile, binaryFlag, 0);
-    runVariation(initFile, eventFile, binaryFlag, 1);
-    //runVariation(initFile, eventFile, binaryFlag, 2);
+    runVariation(initFile, eventFile, binaryFlag, 0);
+
+    // try {
+    //   runVariation(initFile, eventFile, binaryFlag, 1);
+    // } catch (Exception e) {
+    //   System.out.println();
+    // }
+    //
+    // try {
+    //   runVariation(initFile, eventFile, binaryFlag, 2);
+    // } catch (Exception e) {
+    //   System.out.println();
+    // }
   }
 
   public static void runVariation(String initFile, String eventFile, int binaryFlag, int variation) {
