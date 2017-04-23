@@ -1,7 +1,7 @@
 package dvr;
 
 public class RoutingTableArray {
-  private RoutingTable[] routingTableArray;
+  private static RoutingTable[] routingTableArray;
   public int length;
 
   public RoutingTableArray(int numRouters) {
@@ -18,11 +18,11 @@ public class RoutingTableArray {
     return routingTableArray[router];
   }
 
-  public void print() {
+  public static void print() {
     if (DistanceVectorRouting.binaryFlag == 0 || DistanceVectorRouting.binaryFlag == 1) {
-      System.out.printf("|%7s|", "From/To");
+      System.out.printf("|%8s|", "From/To");
       for (int i = 0; i < routingTableArray.length; i++) {
-        System.out.printf("%5d |", i + 1);
+        System.out.printf("%6d |", i + 1);
       }
       for (int i = 0; i < routingTableArray.length; i++) {
         routingTableArray[i].print(i);

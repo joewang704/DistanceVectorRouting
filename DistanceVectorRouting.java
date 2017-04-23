@@ -19,9 +19,19 @@ public class DistanceVectorRouting {
     String eventFile = args[1];
     binaryFlag = Integer.valueOf(args[2]);
 
-    //runVariation(initFile, eventFile, binaryFlag, 0);
-    runVariation(initFile, eventFile, binaryFlag, 1);
-    //runVariation(initFile, eventFile, binaryFlag, 2);
+    runVariation(initFile, eventFile, binaryFlag, 0);
+
+    // try {
+    //   runVariation(initFile, eventFile, binaryFlag, 1);
+    // } catch (Exception e) {
+    //   System.out.println();
+    // }
+    //
+    // try {
+    //   runVariation(initFile, eventFile, binaryFlag, 2);
+    // } catch (Exception e) {
+    //   System.out.println();
+    // }
   }
 
   public static void runVariation(String initFile, String eventFile, int binaryFlag, int variation) {
