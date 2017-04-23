@@ -19,10 +19,21 @@ public class RoutingTableArray {
   }
 
   public void print() {
-    for (int i = 0; i < routingTableArray.length; i++) {
-      System.out.println((i + 1) + ":");
-      routingTableArray[i].print();
-      System.out.println();
+    if (DistanceVectorRouting.binaryFlag == 0 || DistanceVectorRouting.binaryFlag == 1) {
+      System.out.printf("|%7s|", "From/To");
+      for (int i = 0; i < routingTableArray.length; i++) {
+        System.out.printf("%5d |", i + 1);
+      }
+      for (int i = 0; i < routingTableArray.length; i++) {
+        routingTableArray[i].print(i);
+      }
+      System.out.println("\n");
+    } else {
+      for (int i = 0; i < routingTableArray.length; i++) {
+        System.out.println((i + 1) + ":");
+        routingTableArray[i].print();
+        System.out.println();
+      }
     }
   }
 }

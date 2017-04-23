@@ -155,8 +155,7 @@ public class RoutingTable {
   }
 
   public void print() {
-    if (DistanceVectorRouting.binaryFlag == 1) {
-    } else if (DistanceVectorRouting.binaryFlag == 2) {
+    if (DistanceVectorRouting.binaryFlag == 2) {
       System.out.printf("|%7s|", "From/To");
       for (int i = 0; i < table.length; i++) {
         System.out.printf("%2d |", i + 1);
@@ -173,4 +172,23 @@ public class RoutingTable {
     }
   }
 
+  public void print(int round) {
+      System.out.println();
+      System.out.printf("|%7d|", round + 1);
+      for (int j = 0; j < table.length; j++) {
+        RoutingTableEntry entry = table[round][j];
+        System.out.printf("%2d,", entry == null ? -1 : entry.getNextHop()+1);
+        System.out.printf("%2d |", entry == null ? -1 : entry.getNumHops());
+      }
+
+    // for (int i = 0; i < table.length; i++) {
+    //   System.out.printf("|%7d|", i + 1);
+    //   for (int j = 0; j < table.length; j++) {
+    //     RoutingTableEntry entry = table[routerNum][j];
+    //     System.out.printf("%2d,", entry == null ? -1 : entry.getNextHop()+1);
+    //     System.out.printf("%2d |", entry == null ? -1 : entry.getNumHops());
+    //   }
+    //   System.out.println();
+    // }
+  }
 }

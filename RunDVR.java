@@ -4,8 +4,11 @@ public class RunDVR {
   public static void run(RoutingTableArray tables) {
     // repeat iterations of DVR until convergence
     int round = 1;
-    System.out.println("Initial Round 0");
-    tables.print();
+    if (DistanceVectorRouting.binaryFlag == 1 ||
+        DistanceVectorRouting.binaryFlag == 2) {
+      System.out.println("Initial Round 1");
+      tables.print();
+    }
     while (!UpdateQueue.queue.isEmpty()  || !EventQueue.queue.isEmpty()) {
       int size = UpdateQueue.queue.size();
 
@@ -38,8 +41,14 @@ public class RunDVR {
         table.update();
       }
 
-      System.out.println("Round " + round++);
-      tables.print();
+      round++;
+
+      if (DistanceVectorRouting.binaryFlag == 1 ||
+          DistanceVectorRouting.binaryFlag == 2 ||
+         (EventQueue.queue.isEmpty() && UpdateQueue.queue.isEmpty())) {
+       System.out.println("Round " + round);
+       tables.print();
+      }
     }
 
   }

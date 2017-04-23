@@ -11,7 +11,7 @@ public class DistanceVectorRouting {
   public static void main(String[] args) {
     if (args.length != 3 || !args[0].contains(".txt") ||
       !args[1].contains(".txt") || (!args[2].equals("0") && !args[2].equals("1") && !args[2].equals("2"))) {
-      System.out.println("Usage: java textfile.txt eventFile.txt binaryFlag");
+      System.out.println("Usage: java dvr.DistanceVectorRouting textfile.txt eventFile.txt binaryFlag");
       System.exit(1);
     }
 
