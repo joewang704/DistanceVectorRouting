@@ -179,12 +179,12 @@ public class RoutingTable {
   }
 
   public void print(int round) {
-      System.out.println();
-      System.out.printf("|%8d|", round + 1);
+      FileIO.print.println();
+      FileIO.print.printf("|%8d|", round + 1);
       for (int j = 0; j < table.length; j++) {
         RoutingTableEntry entry = table[router][j];
-        System.out.printf("%2d,", entry == null ? -1 : entry.getNextHop()+1);
-        System.out.printf("%3d |", entry == null ? -1 : entry.getNumHops());
+        FileIO.print.printf("%2d,", entry == null ? -1 : entry.getNextHop()+1);
+        FileIO.print.printf("%3d |", entry == null ? -1 : entry.getNumHops());
       }
 
     // for (int i = 0; i < table.length; i++) {

@@ -20,25 +20,17 @@ public class DistanceVectorRouting {
     binaryFlag = Integer.valueOf(args[2]);
 
     runVariation(initFile, eventFile, binaryFlag, 0);
-
-    // try {
-    //   runVariation(initFile, eventFile, binaryFlag, 1);
-    // } catch (Exception e) {
-    //   System.out.println();
-    // }
-    //
-    // try {
-    //   runVariation(initFile, eventFile, binaryFlag, 2);
-    // } catch (Exception e) {
-    //   System.out.println();
-    // }
+    runVariation(initFile, eventFile, binaryFlag, 1);
+    runVariation(initFile, eventFile, binaryFlag, 2);
   }
 
   public static void runVariation(String initFile, String eventFile, int binaryFlag, int variation) {
-    System.out.println("=======================");
+    /*System.out.println("=======================");
     System.out.println("Variation " + variation);
-    System.out.println("=======================");
+    System.out.println("=======================");*/
     DistanceVectorRouting.variation = variation;
+
+    FileIO.start();
 
     try (BufferedReader eventBr = new BufferedReader(new FileReader(eventFile))) {
       String line;
@@ -62,7 +54,6 @@ public class DistanceVectorRouting {
       String line;
       line = br.readLine();
       int numRouters = Integer.valueOf(line);
-      GlobalMatrix globalMatrix = new GlobalMatrix(numRouters);
       RoutingTableArray routingTables = new RoutingTableArray(numRouters);
 
       // initialize adjacency list and routing tables
@@ -70,9 +61,6 @@ public class DistanceVectorRouting {
         int from = Integer.valueOf(line.split(" ")[0]) - 1;
         int to = Integer.valueOf(line.split(" ")[1]) - 1;
         int cost = Integer.valueOf(line.split(" ")[2]);
-
-        // add edges to matrix graph
-        globalMatrix.setEdge(from, to, cost);
 
         RoutingTable fromTable = routingTables.getRoutingTable(from);
         RoutingTable toTable = routingTables.getRoutingTable(to);

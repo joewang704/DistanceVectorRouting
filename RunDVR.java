@@ -5,12 +5,15 @@ public class RunDVR {
   public static int round = 1;
 
   public static void run(RoutingTableArray tables) {
+    lastEventRound = -1;
+    round = 1;
     // repeat iterations of DVR until convergence
     try {
       if (DistanceVectorRouting.binaryFlag == 1 ||
           DistanceVectorRouting.binaryFlag == 2) {
-        System.out.println("Initial Round 1");
-        tables.print();
+        //System.out.println("Round 1");
+        FileIO.print.println("Round 1");
+        RoutingTableArray.print();
       }
       while (!UpdateQueue.queue.isEmpty()  || !EventQueue.queue.isEmpty()) {
         int size = UpdateQueue.queue.size();
@@ -50,11 +53,19 @@ public class RunDVR {
         if (DistanceVectorRouting.binaryFlag == 1 ||
             DistanceVectorRouting.binaryFlag == 2 ||
            (EventQueue.queue.isEmpty() && UpdateQueue.queue.isEmpty())) {
-         System.out.println("Round " + round);
-         tables.print();
+          if (DistanceVectorRouting.binaryFlag == 2) {
+            System.out.println("Round " + round);
+          } else {
+            FileIO.print.println("Round " + round);
+          }
+          RoutingTableArray.print();
         }
       }
-      System.out.println("Convergence delay: " + (round - lastEventRound));
+      if (DistanceVectorRouting.binaryFlag == 1) {
+        FileIO.print.println("Convergence delay: " + (round - lastEventRound));
+      } else if (DistanceVectorRouting.binaryFlag == 2) {
+        System.out.println("Convergence delay: " + (round - lastEventRound));
+      }
     } catch (Exception e) {
       RoutingTableArray.print();
     }

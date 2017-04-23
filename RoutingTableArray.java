@@ -20,14 +20,17 @@ public class RoutingTableArray {
 
   public static void print() {
     if (DistanceVectorRouting.binaryFlag == 0 || DistanceVectorRouting.binaryFlag == 1) {
-      System.out.printf("|%8s|", "From/To");
+      //System.out.printf("|%8s|", "From/To");
+      FileIO.print.printf("|%8s|", "From/To");
       for (int i = 0; i < routingTableArray.length; i++) {
-        System.out.printf("%6d |", i + 1);
+        //System.out.printf("%6d |", i + 1);
+        FileIO.print.printf("%6d |", i + 1);
       }
       for (int i = 0; i < routingTableArray.length; i++) {
         routingTableArray[i].print(i);
       }
-      System.out.println("\n");
+      //System.out.println("\n");
+      FileIO.print.println("\n");
     } else {
       for (int i = 0; i < routingTableArray.length; i++) {
         System.out.println((i + 1) + ":");
