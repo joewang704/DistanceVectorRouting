@@ -6,6 +6,7 @@ import java.io.FileReader;
 public class DistanceVectorRouting {
 
   public static int variation = 0;
+  public static int binaryFlag = -1;
 
   public static void main(String[] args) {
     if (args.length != 3 || !args[0].contains(".txt") ||
@@ -16,10 +17,10 @@ public class DistanceVectorRouting {
 
     String initFile = args[0];
     String eventFile = args[1];
-    int binaryFlag = Integer.valueOf(args[2]);
+    binaryFlag = Integer.valueOf(args[2]);
 
-    runVariation(initFile, eventFile, binaryFlag, 0);
-    //runVariation(initFile, eventFile, binaryFlag, 1);
+    //runVariation(initFile, eventFile, binaryFlag, 0);
+    runVariation(initFile, eventFile, binaryFlag, 1);
     //runVariation(initFile, eventFile, binaryFlag, 2);
   }
 

@@ -52,7 +52,8 @@ public class RoutingTable {
     return table[from][to];
   }
 
-  public void receiveDistanceVector(RoutingTableEntry[] distanceVector, int fromRouter) {
+  public void receiveDistanceVector(RoutingTableEntry[] dvOrig, int fromRouter) {
+    RoutingTableEntry[] distanceVector = Arrays.copyOf(dvOrig, dvOrig.length);
     System.out.print((fromRouter + 1) + " sends to " + (router + 1) + ": ");
 
     // only receive if router that sent DV is a neighbor or itself from edge change
@@ -60,13 +61,10 @@ public class RoutingTable {
       // copy everything
       for (int i = 0; i < distanceVector.length; i++) {
         RoutingTableEntry cur = distanceVector[i];
-        RoutingTableEntry orig = table[router][i];
 
-        /*
         // poison control/split horizon
-        if (orig != null && i != router) {
-          int nextHop = orig.getNextHop();
-          int cost = orig.getCost();
+        if (cur != null && i != router) {
+          int nextHop = cur.getNextHop();
           if (nextHop == router) {
             if (DistanceVectorRouting.variation == 1) {
               // does not advertise
@@ -77,15 +75,14 @@ public class RoutingTable {
               distanceVector[i] = null;
               System.out.print(" inf");
             } else {
-              System.out.print(cur == null ? " inf" : " a" + cur.getCost());
+              System.out.print(cur == null ? " null1" : " " + cur.getCost());
             }
           } else {
-            System.out.print(cur == null ? " inf" : " b" + cur.getCost());
+            System.out.print(cur == null ? " null2" : " " + cur.getCost());
           }
         } else {
-          System.out.print(cur == null ? " inf" : " c" + cur.getCost());
+          System.out.print(cur == null ? " null3" : " " + cur.getCost());
         }
-        */
         System.out.print(cur == null ? " inf" : " " + cur.getCost());
 
         // copies value to table
@@ -114,15 +111,13 @@ public class RoutingTable {
         RoutingTableEntry oldMin = table[router][dest];
 
         if (oldMin != null && oldMin.getCost() == 0) {
+          //System.out.println("called for " + router + " , " + dest);
           continue;
         }
 
         for (int j = 0; j < neighborCosts.length; j++) {
           int startToMid = neighborCosts[j];
           RoutingTableEntry midToDest = table[j][dest];
-
-          //System.out.println("destination: " + (dest+1));
-          //System.out.println(" neighbor "+(j+1)+", cost"+startToMid);
 
           if (startToMid > 0 && midToDest != null) {
 
@@ -135,6 +130,8 @@ public class RoutingTable {
             }
           }
         }
+
+        System.out.println("min " + min + " for " + router + " , " + dest);
 
         if (min == Integer.MAX_VALUE) {
           // vertex is isolated, send infinity
