@@ -1,0 +1,178 @@
+********************* testInit.txt *********************
+3
+1 2 1
+1 3 5
+2 3 2
+
+********************* testEvents.txt *******************
+4 2 3 20
+
+******************** output-basic.txt ******************
+command line: java dvr.DistanceVectorRouting konteInit.txt konteEvents.txt 0
+Round 7
+| From/To|     1 |     2 |     3 |
+|       1| 1,  0 | 2,  1 | 2,  4 |
+|       2| 1,  1 | 2,  0 | 1,  5 |
+|       3| 1,  1 | 1,  2 | 3,  0 |
+
+Convergence delay: 4
+
+**************** output-poison-reverse.txt **************
+command line: java dvr.DistanceVectorRouting konteInit.txt konteEvents.txt 0
+Round 7
+| From/To|     1 |     2 |     3 |
+|       1| 1,  0 | 2,  1 | 3,  1 |
+|       2| 1,  1 | 2,  0 | 1,  2 |
+|       3| 1,  1 | 1,  2 | 3,  0 |
+
+Convergence delay: 4
+
+**************** output-split-horizon.txt **************
+command line: java dvr.DistanceVectorRouting konteInit.txt konteEvents.txt 0
+Round 7
+| From/To|     1 |     2 |     3 |
+|       1| 1,  0 | 2,  1 | 3,  1 |
+|       2| 1,  1 | 2,  0 | 1,  2 |
+|       3| 1,  1 | 1,  2 | 3,  0 |
+
+Convergence delay: 4
+
+******************** output-detailed-basic.txt ******************
+command line: java dvr.DistanceVectorRouting konteInit.txt konteEvents.txt 1
+Round 1
+| From/To|     1 |     2 |     3 |
+|       1| 1,  0 | 2,  1 | 3,  1 |
+|       2| 1,  1 | 2,  0 | 3,  1 |
+|       3| 1,  1 | 2,  1 | 3,  0 |
+
+Round 2
+| From/To|     1 |     2 |     3 |
+|       1| 1,  0 | 2,  1 | 2,  2 |
+|       2| 1,  1 | 2,  0 | 3,  1 |
+|       3| 2,  2 | 2,  1 | 3,  0 |
+
+Round 3
+| From/To|     1 |     2 |     3 |
+|       1| 1,  0 | 2,  1 | 2,  2 |
+|       2| 1,  1 | 2,  0 | 3,  1 |
+|       3| 2,  2 | 2,  1 | 3,  0 |
+
+Round 4
+| From/To|     1 |     2 |     3 |
+|       1| 1,  0 | 2,  1 | 2,  2 |
+|       2| 1,  1 | 2,  0 | 1,  3 |
+|       3| 1,  1 | 1,  2 | 3,  0 |
+
+Round 5
+| From/To|     1 |     2 |     3 |
+|       1| 1,  0 | 2,  1 | 2,  4 |
+|       2| 1,  1 | 2,  0 | 1,  3 |
+|       3| 1,  1 | 1,  2 | 3,  0 |
+
+Round 6
+| From/To|     1 |     2 |     3 |
+|       1| 1,  0 | 2,  1 | 2,  4 |
+|       2| 1,  1 | 2,  0 | 1,  5 |
+|       3| 1,  1 | 1,  2 | 3,  0 |
+
+Round 7
+| From/To|     1 |     2 |     3 |
+|       1| 1,  0 | 2,  1 | 2,  4 |
+|       2| 1,  1 | 2,  0 | 1,  5 |
+|       3| 1,  1 | 1,  2 | 3,  0 |
+
+Convergence delay: 4
+
+**************** output-detailed-poison-reverse.txt **************
+command line: java dvr.DistanceVectorRouting konteInit.txt konteEvents.txt 1
+
+Round 1
+| From/To|     1 |     2 |     3 |
+|       1| 1,  0 | 2,  1 | 3,  1 |
+|       2| 1,  1 | 2,  0 | 3,  1 |
+|       3| 1,  1 | 2,  1 | 3,  0 |
+
+Round 2
+| From/To|     1 |     2 |     3 |
+|       1| 1,  0 | 2,  1 | 2,  2 |
+|       2| 1,  1 | 2,  0 | 3,  1 |
+|       3| 2,  2 | 2,  1 | 3,  0 |
+
+Round 3
+| From/To|     1 |     2 |     3 |
+|       1| 1,  0 | 2,  1 | 2,  2 |
+|       2| 1,  1 | 2,  0 | 3,  1 |
+|       3| 2,  2 | 2,  1 | 3,  0 |
+
+Round 4
+| From/To|     1 |     2 |     3 |
+|       1| 1,  0 | 2,  1 | 2,  2 |
+|       2| 1,  1 | 2,  0 | 3,  1 |
+|       3| 1,  1 | 1,  2 | 3,  0 |
+
+Round 5
+| From/To|     1 |     2 |     3 |
+|       1| 1,  0 | 2,  1 | 3,  1 |
+|       2| 1,  1 | 2,  0 | 3,  1 |
+|       3| 1,  1 | 1,  2 | 3,  0 |
+
+Round 6
+| From/To|     1 |     2 |     3 |
+|       1| 1,  0 | 2,  1 | 3,  1 |
+|       2| 1,  1 | 2,  0 | 1,  2 |
+|       3| 1,  1 | 1,  2 | 3,  0 |
+
+Round 7
+| From/To|     1 |     2 |     3 |
+|       1| 1,  0 | 2,  1 | 3,  1 |
+|       2| 1,  1 | 2,  0 | 1,  2 |
+|       3| 1,  1 | 1,  2 | 3,  0 |
+
+Convergence delay: 4
+
+**************** output-detailed-split-horizon.txt **************
+command line: java dvr.DistanceVectorRouting konteInit.txt konteEvents.txt 1
+
+Round 1
+| From/To|     1 |     2 |     3 |
+|       1| 1,  0 | 2,  1 | 3,  1 |
+|       2| 1,  1 | 2,  0 | 3,  1 |
+|       3| 1,  1 | 2,  1 | 3,  0 |
+
+Round 2
+| From/To|     1 |     2 |     3 |
+|       1| 1,  0 | 2,  1 | 2,  2 |
+|       2| 1,  1 | 2,  0 | 3,  1 |
+|       3| 2,  2 | 2,  1 | 3,  0 |
+
+Round 3
+| From/To|     1 |     2 |     3 |
+|       1| 1,  0 | 2,  1 | 2,  2 |
+|       2| 1,  1 | 2,  0 | 3,  1 |
+|       3| 2,  2 | 2,  1 | 3,  0 |
+
+Round 4
+| From/To|     1 |     2 |     3 |
+|       1| 1,  0 | 2,  1 | 2,  2 |
+|       2| 1,  1 | 2,  0 | 3,  1 |
+|       3| 1,  1 | 1,  2 | 3,  0 |
+
+Round 5
+| From/To|     1 |     2 |     3 |
+|       1| 1,  0 | 2,  1 | 3,  1 |
+|       2| 1,  1 | 2,  0 | 3,  1 |
+|       3| 1,  1 | 1,  2 | 3,  0 |
+
+Round 6
+| From/To|     1 |     2 |     3 |
+|       1| 1,  0 | 2,  1 | 3,  1 |
+|       2| 1,  1 | 2,  0 | 1,  2 |
+|       3| 1,  1 | 1,  2 | 3,  0 |
+
+Round 7
+| From/To|     1 |     2 |     3 |
+|       1| 1,  0 | 2,  1 | 3,  1 |
+|       2| 1,  1 | 2,  0 | 1,  2 |
+|       3| 1,  1 | 1,  2 | 3,  0 |
+
+Convergence delay: 4
