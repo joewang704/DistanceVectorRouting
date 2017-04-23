@@ -1,6 +1,8 @@
 package dvr;
 
 public class RunDVR {
+  public static int lastEventRound = -1;
+
   public static void run(RoutingTableArray tables) {
     // repeat iterations of DVR until convergence
     int round = 1;
@@ -17,6 +19,7 @@ public class RunDVR {
         int fromRouter = event.fromRouter;
         int toRouter = event.toRouter;
         int cost = event.cost;
+        lastEventRound = event.round;
 
         // update edge value with value from event
         RoutingTable fromTable = tables.getRoutingTable(fromRouter);
@@ -50,7 +53,7 @@ public class RunDVR {
        tables.print();
       }
     }
-
+    System.out.println("Convergence delay: " + (round - lastEventRound));
   }
 
   public static void sendDistanceVector(UpdateItem item, RoutingTableArray routingTables) {
